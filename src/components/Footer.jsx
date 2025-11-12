@@ -196,7 +196,7 @@ const Footer = () => {
                 color: '#9ca3af'
               }}>
                 <Mail size={16} />
-                <span>apewe123@gmail.com</span>
+                <span>apeweattah522@gmail.com</span>
               </li>
               <li style={{
                 display: 'flex',

@@ -99,7 +99,7 @@ const Contact = () => {
               color: '#fff',
               fontWeight: '500'
             }}>
-              apewe123@gmail.com
+              apeweattah522@gmail.com
             </p>
           </div>
 

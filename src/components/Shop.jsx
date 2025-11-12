@@ -10,29 +10,29 @@ const Shop = () => {
   const [products] = useState([
     {
       id: 1,
-      name: 'Reincarnated Cup',
-      price: 75.00,
-      image: '/cup.png',
+      name: 'Reincarnated Cap',
+      price: 350.00,
+      image: '/cap.png',
       category: 'Accessories'
     },
     {
       id: 2,
       name: 'White Shirt',
-      price: 150.00,
-      image: '/whiteShirt.png',
+      price: 350.00,
+      image: '/whiteShirt.jpeg',
       category: 'Apparel'
     },
     {
       id: 3,
       name: 'Black Shirt',
-      price: 150.00,
-      image: '/blackShirt.png',
+      price: 350.00,
+      image: '/blackShirt.jpeg',
       category: 'Apparel'
     },
     {
       id: 4,
       name: 'Cargo Pants',
-      price: 250.00,
+      price: 350.00,
       image: '/cargoPants.png',
       category: 'Apparel'
     }
