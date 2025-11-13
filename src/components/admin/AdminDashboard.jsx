@@ -82,8 +82,9 @@ const AdminDashboard = () => {
           maxWidth: '1400px',
           margin: '0 auto',
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative'
         }}>
           <h1 style={{
             fontSize: '1.5rem',
@@ -107,7 +108,9 @@ const AdminDashboard = () => {
               fontSize: '0.875rem',
               fontWeight: '600',
               cursor: 'pointer',
-              transition: 'background-color 0.3s ease'
+              transition: 'background-color 0.3s ease',
+              position: 'absolute',
+              right: 0
             }}
             onMouseEnter={(e) => e.target.style.backgroundColor = '#dc2626'}
             onMouseLeave={(e) => e.target.style.backgroundColor = '#ef4444'}
