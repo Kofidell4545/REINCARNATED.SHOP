@@ -91,7 +91,7 @@ const AdminDashboard = () => {
             color: '#fff',
             letterSpacing: '0.05em'
           }}>
-            ADMIN DASHBOARD
+            WELCOME CEO
           </h1>
           <button
             onClick={handleLogout}
