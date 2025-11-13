@@ -1,14 +1,45 @@
 import React, { useState } from 'react';
 import { X, Plus, Minus, Trash2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import CheckoutForm from './CheckoutForm';
 import PaymentModal from './PaymentModal';
 
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, isCartOpen, closeCart } = useCart();
+  const [isCheckoutFormOpen, setIsCheckoutFormOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState(null);
 
   const handleCheckout = () => {
+    setIsCheckoutFormOpen(true);
+  };
+
+  const handleCheckoutSubmit = (formData) => {
+    setCustomerInfo(formData);
+    setIsCheckoutFormOpen(false);
     setIsPaymentModalOpen(true);
+    
+    // Save order to localStorage
+    saveOrder(formData);
+  };
+
+  const saveOrder = (formData) => {
+    const order = {
+      id: Date.now(),
+      customerName: formData.name,
+      customerPhone: formData.phone,
+      customerAddress: formData.address,
+      items: cartItems,
+      total: getCartTotal(),
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      referenceCode: null // Will be updated when payment modal generates it
+    };
+
+    // Save to localStorage
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    orders.push(order);
+    localStorage.setItem('orders', JSON.stringify(orders));
   };
 
   if (!isCartOpen) return null;
@@ -289,12 +320,22 @@ const Cart = () => {
         )}
       </div>
 
+      {/* Checkout Form */}
+      <CheckoutForm
+        isOpen={isCheckoutFormOpen}
+        onClose={() => setIsCheckoutFormOpen(false)}
+        onSubmit={handleCheckoutSubmit}
+        cartItems={cartItems}
+        cartTotal={getCartTotal()}
+      />
+
       {/* Payment Modal */}
       <PaymentModal 
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
         cartTotal={getCartTotal()}
         cartItems={cartItems}
+        customerInfo={customerInfo}
       />
 
       <style>{`
