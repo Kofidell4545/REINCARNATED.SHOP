@@ -15,12 +15,14 @@ import {
   Users
 } from 'lucide-react';
 import ProductManagement from './ProductManagement';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState('orders'); // 'orders' or 'products'
   const [selectedOrder, setSelectedOrder] = useState(null);
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   useEffect(() => {
     loadOrders();
@@ -34,8 +36,9 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('isAdmin');
-    navigate('/admin/login');
+    if (window.confirm('Are you sure you want to logout?')) {
+      logout();
+    }
   };
 
   const updateOrderStatus = (orderId, newStatus) => {

@@ -1,24 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Lock, Eye, EyeOff } from 'lucide-react';
+import { Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/admin/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleLogin = (e) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     
-    // Simple password check (you can change this password)
-    if (password === 'reincarnated2024') {
-      localStorage.setItem('isAdmin', 'true');
-      navigate('/admin/dashboard');
-    } else {
-      setError('Incorrect password. Please try again.');
-    }
+    // Simulate a slight delay for better UX
+    setTimeout(() => {
+      const result = login(password);
+      
+      if (result.success) {
+        navigate('/admin/dashboard', { replace: true });
+      } else {
+        setError(result.error);
+        setPassword('');
+      }
+      
+      setIsLoading(false);
+    }, 500);
   };
 
   return (
@@ -125,43 +142,84 @@ const AdminLogin = () => {
               </button>
             </div>
             {error && (
-              <p style={{
-                color: '#ef4444',
-                fontSize: '0.75rem',
-                marginTop: '0.5rem'
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginTop: '0.5rem',
+                padding: '0.75rem',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                borderRadius: '8px',
+                border: '1px solid #ef4444'
               }}>
-                {error}
-              </p>
+                <AlertCircle size={16} color="#ef4444" />
+                <p style={{
+                  color: '#ef4444',
+                  fontSize: '0.75rem',
+                  margin: 0
+                }}>
+                  {error}
+                </p>
+              </div>
             )}
           </div>
 
           <button
             type="submit"
+            disabled={isLoading}
             style={{
               width: '100%',
               padding: '1rem',
-              backgroundColor: '#fff',
+              backgroundColor: isLoading ? '#9ca3af' : '#fff',
               color: '#000',
               border: 'none',
               borderRadius: '10px',
               fontSize: '1rem',
               fontWeight: '700',
-              cursor: 'pointer',
+              cursor: isLoading ? 'not-allowed' : 'pointer',
               transition: 'all 0.3s ease',
               textTransform: 'uppercase',
-              letterSpacing: '0.05em'
+              letterSpacing: '0.05em',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem'
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = '#f3f4f6';
-              e.target.style.transform = 'translateY(-2px)';
+              if (!isLoading) {
+                e.target.style.backgroundColor = '#f3f4f6';
+                e.target.style.transform = 'translateY(-2px)';
+              }
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = '#fff';
-              e.target.style.transform = 'translateY(0)';
+              if (!isLoading) {
+                e.target.style.backgroundColor = '#fff';
+                e.target.style.transform = 'translateY(0)';
+              }
             }}
           >
-            Login
+            {isLoading ? (
+              <>
+                <div style={{
+                  width: '16px',
+                  height: '16px',
+                  border: '2px solid #000',
+                  borderTop: '2px solid transparent',
+                  borderRadius: '50%',
+                  animation: 'spin 0.8s linear infinite'
+                }} />
+                Logging in...
+              </>
+            ) : (
+              'Login'
+            )}
           </button>
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
         </form>
 
         {/* Back to Home */}
