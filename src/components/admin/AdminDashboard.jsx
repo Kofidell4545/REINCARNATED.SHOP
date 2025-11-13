@@ -9,7 +9,10 @@ import {
   Calendar,
   CheckCircle,
   Clock,
-  X
+  X,
+  DollarSign,
+  TrendingUp,
+  Users
 } from 'lucide-react';
 import ProductManagement from './ProductManagement';
 
@@ -66,6 +69,13 @@ const AdminDashboard = () => {
       minute: '2-digit'
     });
   };
+
+  // Analytics calculations
+  const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+  const pendingOrders = orders.filter(order => order.status === 'pending').length;
+  const confirmedOrders = orders.filter(order => order.status === 'confirmed').length;
+  const completedOrders = orders.filter(order => order.status === 'completed').length;
+  const totalCustomers = new Set(orders.map(order => order.customerPhone)).size;
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#000' }}>
@@ -186,6 +196,158 @@ const AdminDashboard = () => {
       }}>
         {activeTab === 'orders' ? (
           <>
+            {/* Analytics Cards */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '1.5rem',
+              marginBottom: '2rem'
+            }}>
+              {/* Total Revenue */}
+              <div style={{
+                backgroundColor: '#1a1a1a',
+                borderRadius: '12px',
+                padding: '1.5rem',
+                border: '1px solid #333',
+                transition: 'transform 0.3s ease, border-color 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.borderColor = '#22c55e';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.borderColor = '#333';
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundColor: '#22c55e',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <DollarSign size={24} color="#000" />
+                  </div>
+                  <TrendingUp size={20} color="#22c55e" />
+                </div>
+                <p style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '0.5rem' }}>Total Revenue</p>
+                <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>GH₵ {totalRevenue.toFixed(2)}</p>
+              </div>
+
+              {/* Total Orders */}
+              <div style={{
+                backgroundColor: '#1a1a1a',
+                borderRadius: '12px',
+                padding: '1.5rem',
+                border: '1px solid #333',
+                transition: 'transform 0.3s ease, border-color 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.borderColor = '#3b82f6';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.borderColor = '#333';
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundColor: '#3b82f6',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <ShoppingBag size={24} color="#000" />
+                  </div>
+                  <Package size={20} color="#3b82f6" />
+                </div>
+                <p style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '0.5rem' }}>Total Orders</p>
+                <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>{orders.length}</p>
+                <div style={{ display: 'flex', gap: '1rem', marginTop: '0.75rem', fontSize: '0.75rem' }}>
+                  <span style={{ color: '#f59e0b' }}>⏳ {pendingOrders} Pending</span>
+                  <span style={{ color: '#3b82f6' }}>✓ {confirmedOrders} Confirmed</span>
+                  <span style={{ color: '#22c55e' }}>✓✓ {completedOrders} Done</span>
+                </div>
+              </div>
+
+              {/* Total Customers */}
+              <div style={{
+                backgroundColor: '#1a1a1a',
+                borderRadius: '12px',
+                padding: '1.5rem',
+                border: '1px solid #333',
+                transition: 'transform 0.3s ease, border-color 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.borderColor = '#ec4899';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.borderColor = '#333';
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundColor: '#ec4899',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Users size={24} color="#000" />
+                  </div>
+                  <TrendingUp size={20} color="#ec4899" />
+                </div>
+                <p style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '0.5rem' }}>Total Customers</p>
+                <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>{totalCustomers}</p>
+                <p style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '0.5rem' }}>Unique phone numbers</p>
+              </div>
+
+              {/* Average Order Value */}
+              <div style={{
+                backgroundColor: '#1a1a1a',
+                borderRadius: '12px',
+                padding: '1.5rem',
+                border: '1px solid #333',
+                transition: 'transform 0.3s ease, border-color 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.borderColor = '#f59e0b';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.borderColor = '#333';
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundColor: '#f59e0b',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <TrendingUp size={24} color="#000" />
+                  </div>
+                  <DollarSign size={20} color="#f59e0b" />
+                </div>
+                <p style={{ fontSize: '0.875rem', color: '#9ca3af', marginBottom: '0.5rem' }}>Avg Order Value</p>
+                <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>
+                  GH₵ {orders.length > 0 ? (totalRevenue / orders.length).toFixed(2) : '0.00'}
+                </p>
+              </div>
+            </div>
+
             {/* Orders List */}
             {orders.length === 0 ? (
               <div style={{
