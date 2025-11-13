@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import { FaTiktok } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -46,7 +47,7 @@ const Footer = () => {
               gap: '1rem'
             }}>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/the_reincarnated.tribe?igsh=M3RhYXY5MTZrdHBq"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -73,7 +74,7 @@ const Footer = () => {
                 <Instagram size={20} />
               </a>
               <a
-                href="https://facebook.com"
+                href="https://www.tiktok.com/@the.reincarnated_tribe?_r=1&_t=ZM-91MP33kHuf6"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -89,7 +90,7 @@ const Footer = () => {
                   textDecoration: 'none'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#1877F2';
+                  e.currentTarget.style.backgroundColor = '#000000';
                   e.currentTarget.style.transform = 'translateY(-3px)';
                 }}
                 onMouseLeave={(e) => {
@@ -97,7 +98,7 @@ const Footer = () => {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <Facebook size={20} />
+                <FaTiktok size={20} />
               </a>
               <a
                 href="https://twitter.com"

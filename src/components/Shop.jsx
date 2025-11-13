@@ -13,27 +13,27 @@ const Shop = () => {
       name: 'Reincarnated Cap',
       price: 350.00,
       image: '/cap.png',
-      category: 'Accessories'
+      category: 'Apparel'
     },
     {
       id: 2,
-      name: 'White Shirt',
+      name: 'White ',
       price: 350.00,
       image: '/whiteShirt.jpeg',
       category: 'Apparel'
     },
     {
       id: 3,
-      name: 'Black Shirt',
+      name: 'Black ',
       price: 350.00,
       image: '/blackShirt.jpeg',
       category: 'Apparel'
     },
     {
       id: 4,
-      name: 'Cargo Pants',
-      price: 350.00,
-      image: '/cargoPants.png',
+      name: 'Cuffed Beanie',
+      price: 150.00,
+      image: '/Cujay.jpeg',
       category: 'Apparel'
     }
   ]);

@@ -99,7 +99,7 @@ const Hero = () => {
             padding: '0 1rem'
           }}
         >
-          Discover unique, one-of-a-kind clothing pieces that reflect your individuality. Each item is carefully curated and designed to ensure you stand out from the crowd.
+          Discover unique, one of a kind clothing pieces that reflect your individuality. Each item is carefully curated and designed to ensure you stand out from the crowd.
         </p>
         <button 
           style={{ 
