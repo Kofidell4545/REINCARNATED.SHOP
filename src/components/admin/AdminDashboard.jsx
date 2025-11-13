@@ -87,12 +87,18 @@ const AdminDashboard = () => {
           position: 'relative'
         }}>
           <h1 style={{
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             fontWeight: 'bold',
-            color: '#fff',
-            letterSpacing: '0.05em'
+            background: 'linear-gradient(90deg, #f59e0b, #ef4444, #ec4899, #8b5cf6, #3b82f6, #10b981)',
+            backgroundSize: '200% 200%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            letterSpacing: '0.1em',
+            animation: 'gradient 3s ease infinite, bounce 2s ease-in-out infinite',
+            textShadow: '0 0 30px rgba(245, 158, 11, 0.5)'
           }}>
-            WELCOME CEO
+            👑 WELCOME CEO 👑
           </h1>
           <button
             onClick={handleLogout}
@@ -441,6 +447,30 @@ const AdminDashboard = () => {
           </div>
         </>
       )}
+
+      {/* CSS Animations */}
+      <style>{`
+        @keyframes gradient {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+      `}</style>
     </div>
   );
 };
