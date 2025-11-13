@@ -100,12 +100,13 @@ const Navbar = () => {
           >
             <Search className="w-5 h-5 text-white" />
           </button>
-          <button 
+          <Link
+            to="/admin/login"
             className="p-2 rounded-full hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
-            aria-label="User Profile"
+            aria-label="Admin Login"
           >
             <User className="w-5 h-5 text-white" />
-          </button>
+          </Link>
           <button 
             className="p-2 rounded-full hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
             aria-label="Shopping Cart"
@@ -227,12 +228,14 @@ const Navbar = () => {
             >
               <Search className="w-6 h-6 text-white" />
             </button>
-            <button 
+            <Link
+              to="/admin/login"
               className="p-3 rounded-full hover:bg-gray-800 transition-colors duration-200"
-              aria-label="User Profile"
+              aria-label="Admin Login"
+              onClick={closeMobileMenu}
             >
               <User className="w-6 h-6 text-white" />
-            </button>
+            </Link>
             <button 
               className="p-3 rounded-full hover:bg-gray-800 transition-colors duration-200"
               aria-label="Shopping Cart"
