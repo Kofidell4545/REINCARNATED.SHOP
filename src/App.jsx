@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Shop from './components/Shop';
@@ -16,10 +18,12 @@ import './index.css';
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <AuthProvider>
-          <Routes>
+    <ErrorBoundary>
+      <CartProvider>
+        <Router>
+          <AuthProvider>
+            <ToastProvider>
+              <Routes>
             {/* Customer Routes */}
             <Route path="/*" element={
               <div className="min-h-screen bg-black text-white" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -47,10 +51,12 @@ function App() {
                 </ProtectedRoute>
               } 
             />
-          </Routes>
-        </AuthProvider>
-      </Router>
-    </CartProvider>
+              </Routes>
+            </ToastProvider>
+          </AuthProvider>
+        </Router>
+      </CartProvider>
+    </ErrorBoundary>
   );
 }
 

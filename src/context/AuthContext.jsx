@@ -27,41 +27,60 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const checkAuth = () => {
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    const loginTime = localStorage.getItem('loginTime');
-    
-    if (isAdmin && loginTime) {
-      const currentTime = new Date().getTime();
-      const timeDiff = currentTime - parseInt(loginTime);
+    try {
+      const isAdmin = localStorage.getItem('isAdmin') === 'true';
+      const loginTime = localStorage.getItem('loginTime');
       
-      // Check if session has expired
-      if (timeDiff > SESSION_TIMEOUT) {
-        logout();
-      } else {
-        setIsAuthenticated(true);
+      if (isAdmin && loginTime) {
+        const currentTime = new Date().getTime();
+        const timeDiff = currentTime - parseInt(loginTime);
+        
+        // Check if session has expired
+        if (timeDiff > SESSION_TIMEOUT) {
+          logout();
+        } else {
+          setIsAuthenticated(true);
+        }
       }
+    } catch (error) {
+      console.error('Error checking authentication:', error);
+      // Clear potentially corrupted data
+      localStorage.removeItem('isAdmin');
+      localStorage.removeItem('loginTime');
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   const login = (password) => {
-    if (password === ADMIN_PASSWORD) {
-      const loginTime = new Date().getTime().toString();
-      localStorage.setItem('isAdmin', 'true');
-      localStorage.setItem('loginTime', loginTime);
-      setIsAuthenticated(true);
-      return { success: true };
-    } else {
-      return { success: false, error: 'Incorrect password' };
+    try {
+      if (password === ADMIN_PASSWORD) {
+        const loginTime = new Date().getTime().toString();
+        localStorage.setItem('isAdmin', 'true');
+        localStorage.setItem('loginTime', loginTime);
+        setIsAuthenticated(true);
+        return { success: true };
+      } else {
+        return { success: false, error: 'Incorrect password' };
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      return { success: false, error: 'Login failed. Please try again.' };
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('isAdmin');
-    localStorage.removeItem('loginTime');
-    setIsAuthenticated(false);
-    navigate('/admin/login');
+    try {
+      localStorage.removeItem('isAdmin');
+      localStorage.removeItem('loginTime');
+      setIsAuthenticated(false);
+      navigate('/admin/login');
+    } catch (error) {
+      console.error('Error during logout:', error);
+      // Force logout even if localStorage fails
+      setIsAuthenticated(false);
+      navigate('/admin/login');
+    }
   };
 
   // Auto-logout on session timeout

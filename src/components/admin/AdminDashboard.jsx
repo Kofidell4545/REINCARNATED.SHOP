@@ -29,10 +29,16 @@ const AdminDashboard = () => {
   }, []);
 
   const loadOrders = () => {
-    const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-    // Sort by newest first
-    const sortedOrders = savedOrders.sort((a, b) => b.id - a.id);
-    setOrders(sortedOrders);
+    try {
+      const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+      // Sort by newest first
+      const sortedOrders = savedOrders.sort((a, b) => b.id - a.id);
+      setOrders(sortedOrders);
+    } catch (error) {
+      console.error('Error loading orders:', error);
+      setOrders([]);
+      // Optionally show toast notification
+    }
   };
 
   const handleLogout = () => {
@@ -42,11 +48,16 @@ const AdminDashboard = () => {
   };
 
   const updateOrderStatus = (orderId, newStatus) => {
-    const updatedOrders = orders.map(order =>
-      order.id === orderId ? { ...order, status: newStatus } : order
-    );
-    setOrders(updatedOrders);
-    localStorage.setItem('orders', JSON.stringify(updatedOrders));
+    try {
+      const updatedOrders = orders.map(order =>
+        order.id === orderId ? { ...order, status: newStatus } : order
+      );
+      setOrders(updatedOrders);
+      localStorage.setItem('orders', JSON.stringify(updatedOrders));
+    } catch (error) {
+      console.error('Error updating order status:', error);
+      alert('Failed to update order status. Please try again.');
+    }
   };
 
   const getStatusColor = (status) => {
@@ -86,11 +97,18 @@ const AdminDashboard = () => {
       <header style={{
         backgroundColor: '#1a1a1a',
         borderBottom: '1px solid #333',
-        padding: '1.5rem 2rem',
+        padding: '1rem',
         position: 'sticky',
         top: 0,
         zIndex: 50
       }}>
+        <style>{`
+          @media (min-width: 768px) {
+            header {
+              padding: 1.5rem 2rem !important;
+            }
+          }
+        `}</style>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
@@ -100,16 +118,17 @@ const AdminDashboard = () => {
           position: 'relative'
         }}>
           <h1 style={{
-            fontSize: '2rem',
+            fontSize: 'clamp(1.25rem, 5vw, 2rem)',
             fontWeight: 'bold',
             background: 'linear-gradient(90deg, #f59e0b, #ef4444, #ec4899, #8b5cf6, #3b82f6, #10b981)',
             backgroundSize: '200% 200%',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-            letterSpacing: '0.1em',
+            letterSpacing: '0.05em',
             animation: 'gradient 3s ease infinite, bounce 2s ease-in-out infinite',
-            textShadow: '0 0 30px rgba(245, 158, 11, 0.5)'
+            textShadow: '0 0 30px rgba(245, 158, 11, 0.5)',
+            textAlign: 'center'
           }}>
             👑 WELCOME CEO 👑
           </h1>
@@ -119,17 +138,19 @@ const AdminDashboard = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem',
-              padding: '0.75rem 1.5rem',
+              padding: '0.5rem 1rem',
               backgroundColor: '#ef4444',
               color: '#fff',
               border: 'none',
               borderRadius: '8px',
-              fontSize: '0.875rem',
+              fontSize: '0.75rem',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'background-color 0.3s ease',
               position: 'absolute',
-              right: 0
+              right: '0.5rem',
+              top: '50%',
+              transform: 'translateY(-50%)'
             }}
             onMouseEnter={(e) => e.target.style.backgroundColor = '#dc2626'}
             onMouseLeave={(e) => e.target.style.backgroundColor = '#ef4444'}
@@ -144,13 +165,14 @@ const AdminDashboard = () => {
       <div style={{
         backgroundColor: '#1a1a1a',
         borderBottom: '1px solid #333',
-        padding: '0 2rem'
+        padding: '0 1rem',
+        overflowX: 'auto'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
           display: 'flex',
-          gap: '2rem'
+          gap: '1rem'
         }}>
           <button
             onClick={() => setActiveTab('orders')}
@@ -195,16 +217,16 @@ const AdminDashboard = () => {
       <div style={{
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: '2rem'
+        padding: '1rem'
       }}>
         {activeTab === 'orders' ? (
           <>
             {/* Analytics Cards */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: '1.5rem',
-              marginBottom: '2rem'
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))',
+              gap: '1rem',
+              marginBottom: '1.5rem'
             }}>
               {/* Total Revenue */}
               <div style={{
@@ -369,7 +391,7 @@ const AdminDashboard = () => {
             ) : (
               <div style={{
                 display: 'grid',
-                gap: '1.5rem'
+                gap: '1rem'
               }}>
                 {orders.map(order => (
                   <div
@@ -559,10 +581,10 @@ const AdminDashboard = () => {
               left: '50%',
               transform: 'translate(-50%, -50%)',
               backgroundColor: '#1a1a1a',
-              borderRadius: '20px',
-              padding: '2rem',
+              borderRadius: '12px',
+              padding: '1.5rem',
               maxWidth: '600px',
-              width: '90%',
+              width: 'calc(100% - 2rem)',
               maxHeight: '90vh',
               overflowY: 'auto',
               zIndex: 1002
