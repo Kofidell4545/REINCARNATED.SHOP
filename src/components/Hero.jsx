@@ -1,6 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleShopNow = () => {
+    navigate('/shop');
+  };
   return (
     <section 
       style={{ 
@@ -102,6 +108,7 @@ const Hero = () => {
           Discover unique, one of a kind clothing pieces that reflect your individuality. Each item is carefully curated and designed to ensure you stand out from the crowd.
         </p>
         <button 
+          onClick={handleShopNow}
           style={{ 
             backgroundColor: '#000', 
             color: '#fff', 

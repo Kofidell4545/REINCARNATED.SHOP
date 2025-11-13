@@ -8,25 +8,44 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Cart from './components/Cart';
 import Footer from './components/Footer';
+import AdminLogin from './components/admin/AdminLogin';
+import AdminDashboard from './components/admin/AdminDashboard';
+import ProtectedRoute from './components/admin/ProtectedRoute';
 import './index.css';
 
 function App() {
   return (
     <CartProvider>
       <Router>
-        <div className="min-h-screen bg-black text-white" style={{ display: 'flex', flexDirection: 'column' }}>
-          <Navbar />
-          <Cart />
-          <main style={{ flex: 1 }}>
-            <Routes>
-              <Route path="/" element={<Hero />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <Routes>
+          {/* Customer Routes */}
+          <Route path="/*" element={
+            <div className="min-h-screen bg-black text-white" style={{ display: 'flex', flexDirection: 'column' }}>
+              <Navbar />
+              <Cart />
+              <main style={{ flex: 1 }}>
+                <Routes>
+                  <Route path="/" element={<Hero />} />
+                  <Route path="/shop" element={<Shop />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          } />
+
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route 
+            path="/admin/dashboard" 
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } 
+          />
+        </Routes>
       </Router>
     </CartProvider>
   );
